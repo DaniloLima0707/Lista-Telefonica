@@ -56,8 +56,7 @@ public class MainActivity extends AppCompatActivity {
         listaDados.setOnItemLongClickListener(
                 new AdapterView.OnItemLongClickListener() {
                     @Override
-                    public boolean onItemLongClick(AdapterView<?> adapterView,
-                                                   View view, int i, long l) {
+                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                         AlertDialog.Builder mensagem = new AlertDialog.Builder(view.getContext());
                         mensagem.setTitle("Opções");
                         mensagem.setMessage("Escolha uma opção para realizar");
@@ -100,5 +99,66 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+    public boolean verificar(){
+        String s1 = campoNome.getText().toString();
+        String s2 = campoTelefone.getText().toString();
+        String s3 = campoDataNascimento.getText().toString();
+        if ((s1.equals(null) || s2.equals(null) || s3.equals(null))
+                || (s1.equals("") || s2.equals("") || s3.equals(""))){
+            Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
 
+    public void salvar(View view){
+        if ( verificar()){
+            Contato contato = new Contato();
+            if (atualiza != null){
+                contato.setId(atualiza);
+
+                contatoDB.lista(dados);
+                Toast.makeText(this, "Contato Salvo", Toast.LENGTH_SHORT).show();
+            }
+            contato.setCampoNom(campoNome.getText().toString());
+            contato.setCampoTel(campoTelefone.getText().toString());
+            contato.setCampoDataNasc(campoDataNascimento.getText().toString());
+
+            if (atualiza != null)
+                contatoDB.atualizar(contato);
+            else {
+                contatoDB.inserir(contato);
+                contatoDB.lista(dados);
+                Toast.makeText(this, "Contato Salvo", Toast.LENGTH_SHORT).show();
+            }
+            contatoDB.lista(dados);
+            listaDados.invalidateViews();
+            limpar();
+            atualiza = null;
+            confirma = null;
+        }
+    }
+
+    private void limpar(){
+        campoNome.setText("");
+        campoTelefone.setText("");
+        campoDataNascimento.setText("");
+    }
+
+    @Override
+    public void onBackPressed(){
+        if (confirma != null){
+            super.onBackPressed();
+            limpar();
+            String msgCancelar = "Edição Cancelada";
+            Toast.makeText(getApplicationContext(), msgCancelar, Toast.LENGTH_SHORT).show();
+            confirma = null;
+        } else {
+            super.onBackPressed();
+            limpar();
+            String msgSair = "Saindo do Sistema";
+            Toast.makeText(getApplicationContext(), msgSair, Toast.LENGTH_SHORT).show();
+        }
+    }
 }
