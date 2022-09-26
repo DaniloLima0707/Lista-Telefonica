@@ -42,8 +42,8 @@ public class ContatoDB {
     public void lista(List dados){
         dados.clear();
         conexao = db.getReadableDatabase();
-        String names[] = {"id", "campoNom", "campoTel", "campoDataNasc"};
-        Cursor query = conexao.query("Lista", names, null, null, null, null, "campoNom");
+        String names[] = {"id", "campoNome", "campoTelefone", "campoDataNascimento"};
+        Cursor query = conexao.query("Lista", names, null, null, null, null, "campoNome");
         while (query.moveToNext()){
             Contato contato = new Contato();
             contato.setId(Integer.parseInt(

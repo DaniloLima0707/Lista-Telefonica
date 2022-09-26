@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        db = new DBHelper(this);
+        contatoDB = new ContatoDB(db);
+
         campoNome = findViewById(R.id.campoNome);
         campoTelefone = findViewById(R.id.campoTelefone);
         campoDataNascimento = findViewById(R.id.campoDataNascimento);
